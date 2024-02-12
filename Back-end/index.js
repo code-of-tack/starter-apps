@@ -1,8 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
 const app = express();
-const port = 5000;
+dotenv.config()
 
 //Schema
 const schemaData = mongoose.Schema({
@@ -28,7 +29,7 @@ const schemaData = mongoose.Schema({
 
 const userModel = mongoose.model("user", schemaData)
 
-mongoose.connect('mongodb://127.0.0.1:27017/crud-operation', {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => {
@@ -50,8 +51,8 @@ app.get('/api/status', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is listening on port ${port}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server is listening on port ${process.env.PORT}`);
 });
 
 // Close MongoDB connection when the Node.js application exits
