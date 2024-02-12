@@ -4,7 +4,31 @@ import mongoose from 'mongoose';
 const app = express();
 const port = 5000;
 
-mongoose.connect('mongodb://127.0.0.1:27017/my-admin', {
+//Schema
+const schemaData = mongoose.Schema({
+  name: {
+      type: String,
+      required: true,
+  },
+  email: {
+      type: String,
+      required: true,
+      unique: true,
+  },
+  password: {
+      type: String,
+      required: true,
+  },
+  createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+});
+  
+
+const userModel = mongoose.model("user", schemaData)
+
+mongoose.connect('mongodb://127.0.0.1:27017/crud-operation', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => {
@@ -15,7 +39,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/my-admin', {
 
 const SampleModel = mongoose.model('Sample', { message: String });
 
-app.get('/starter-application', async (req, res) => {
+app.get('/api/status', async (req, res) => {
   try {
     const sample = new SampleModel({ message: "/starter-application route accessed" });
     await sample.save();
